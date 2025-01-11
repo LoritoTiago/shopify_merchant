@@ -68,7 +68,7 @@ class RecentUpdatesWidget extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
               TextNormal(
-                text: timeago.format(DateTime.now()),
+                text: timeago.format(DateTime.now(), locale: 'en_short'),
                 size: 12.0,
               )
             ],

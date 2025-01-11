@@ -9,6 +9,7 @@ class CustomTheme {
   static const Color black = Color(0xff26273C);
   static const Color green = Color(0xff47A348);
   static const Color grey = Color(0xff9395A4);
+  static const Color grey2 = Color(0xffF5F5F5);
 
   static ThemeData themeData = ThemeData(
     useMaterial3: false,
