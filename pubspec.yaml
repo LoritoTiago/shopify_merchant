@@ -40,6 +40,8 @@ dependencies:
   responsive_framework: ^0.2.0
   lottie: ^1.2.2
   get_it: ^8.0.3
+  flutter_staggered_animations: ^1.1.1
+  timeago: ^3.7.0
 
 dev_dependencies:
   flutter_test:

@@ -53,7 +53,14 @@ class _MainPageState extends State<MainPage> {
       child: Container(
         height: 100.0,
         decoration: BoxDecoration(
-          color: CustomTheme.primary.withOpacity(.5),
+          color: CustomTheme.primary,
+          boxShadow: [
+            BoxShadow(
+              color: CustomTheme.grey.withOpacity(.2),
+              offset: const Offset(0, 0),
+              blurRadius: 80,
+            ),
+          ],
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(50),
             topRight: Radius.circular(50),
