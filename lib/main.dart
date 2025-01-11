@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shopify_merchant/core/settings/custom_theme.dart';
+import 'package:shopify_merchant/core/settings/environment_setting.dart';
 import 'package:shopify_merchant/core/settings/responsive_setting.dart';
 import 'package:shopify_merchant/core/settings/sizer_setting.dart';
 import 'package:shopify_merchant/features/splash/presentation/splash.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
+  EnvironmentSetting.start();
 }
 
 class MyApp extends StatelessWidget {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shopify_merchant/features/home/presentation/home.dart';
+import 'package:shopify_merchant/features/main_page/presentation/main_page.dart';
 import 'package:shopify_merchant/features/splash/data/model/splash_state.dart';
 import 'package:shopify_merchant/features/splash/presentation/controller/splash_controller.dart';
-import 'package:shopify_merchant/features/splash/widgets/robot_animation_widget.dart';
+import 'package:shopify_merchant/features/splash/presentation/widgets/robot_animation_widget.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -33,7 +33,7 @@ class _SplashState extends State<Splash> {
         valueListenable: _splashController,
         builder: (context, value, child) {
           if (_splashController.value == SplashStatus.loaded) {
-            return const Home();
+            return const MainPage();
           }
 
           return _splashWidget();
