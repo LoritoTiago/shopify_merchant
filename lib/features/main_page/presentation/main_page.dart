@@ -26,6 +26,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: ValueListenableBuilder(
         valueListenable: _mainPageController,
         builder: (context, value, child) {
@@ -51,7 +52,7 @@ class _MainPageState extends State<MainPage> {
       left: 0,
       right: 0,
       child: Container(
-        height: 100.0,
+        height: 80.0,
         decoration: BoxDecoration(
           color: CustomTheme.primary,
           boxShadow: [

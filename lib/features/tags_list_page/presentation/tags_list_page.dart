@@ -27,6 +27,7 @@ class _TagsListPageState extends State<TagsListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: _tagsBackground(
         child: SafeArea(
           child: Padding(

@@ -51,12 +51,6 @@ class _ProductDetailsItemWidgetState extends State<ProductDetailsItemWidget>
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Material(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(50.0)),
@@ -74,21 +68,38 @@ class _ProductDetailsItemWidgetState extends State<ProductDetailsItemWidget>
             ),
             child: ClipRRect(
               child: AnimatedBuilder(
-                  animation: _scaleAnimation,
-                  builder: (context, child) {
-                    return Transform.scale(
-                      scale: _scaleAnimation.value,
-                      child: FadeInImage.assetNetwork(
-                        fit: BoxFit.cover,
-                        placeholder: 'assets/icon.png',
-                        placeholderColorBlendMode: BlendMode.clear,
-                        image: widget.product.image?.src ?? "",
-                        fadeInDuration: const Duration(
-                          milliseconds: 300,
+                animation: _scaleAnimation,
+                builder: (context, child) {
+                  return Image.network(
+                    widget.product.image?.src ?? "",
+                    fit: BoxFit.cover,
+                    loadingBuilder: (
+                      BuildContext context,
+                      Widget child,
+                      ImageChunkEvent? loadingProgress,
+                    ) {
+                      if (loadingProgress == null) {
+                        return Transform.scale(
+                            scale: _scaleAnimation.value, child: child);
+                      }
+
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                          color: CustomTheme.purple,
                         ),
-                      ),
-                    );
-                  }),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Icon(
+                        Icons.error,
+                        size: 50,
+                        color: Colors.red,
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -111,9 +122,11 @@ class _ProductDetailsItemWidgetState extends State<ProductDetailsItemWidget>
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 child: const TextNormal(
-                  text: "Update Product",
+                  text: "Close",
                   size: 12,
                 ),
               ),
@@ -175,5 +188,11 @@ class _ProductDetailsItemWidgetState extends State<ProductDetailsItemWidget>
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
