@@ -4,5 +4,5 @@ class Environment {
   static String get getFileName => ".env";
 
   static String get getUrl => dotenv.env['API_URL']!;
-  static String get getUrlParto => dotenv.env['API_TOKEN']!;
+  static String get getToken => dotenv.env['API_TOKEN']!;
 }

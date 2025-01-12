@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopify_merchant/core/presentation/text_normal.dart';
 import 'package:shopify_merchant/features/main_page/presentation/main_page.dart';
 import 'package:shopify_merchant/features/splash/data/model/splash_state.dart';
 import 'package:shopify_merchant/features/splash/presentation/controller/splash_controller.dart';
@@ -43,11 +44,19 @@ class _SplashState extends State<Splash> {
   }
 
   Widget _splashWidget() {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        RobotAnimationWidget(),
+        const RobotAnimationWidget(),
+        AnimatedSwitcher(
+          switchInCurve: Curves.decelerate,
+          switchOutCurve: Curves.bounceInOut,
+          duration: const Duration(milliseconds: 500),
+          child: _splashController.haveError
+              ? TextNormal(text: _splashController.value.message)
+              : const SizedBox.shrink(),
+        )
       ],
     );
   }

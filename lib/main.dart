@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopify_merchant/core/di/di.dart';
 import 'package:shopify_merchant/core/settings/custom_theme.dart';
 import 'package:shopify_merchant/core/settings/environment_setting.dart';
 import 'package:shopify_merchant/core/settings/responsive_setting.dart';
@@ -8,6 +9,7 @@ import 'package:shopify_merchant/features/splash/presentation/splash.dart';
 void main() async {
   runApp(const MyApp());
   EnvironmentSetting.start();
+  DI.initDi();
 }
 
 class MyApp extends StatelessWidget {
