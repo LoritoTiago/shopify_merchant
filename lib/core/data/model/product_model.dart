@@ -50,7 +50,7 @@ class Product {
   final dynamic templateSuffix;
   final PublishedScope? publishedScope;
   final String? tags;
-  final Status? status;
+  final String? status;
   final String? adminGraphqlApiId;
   final List<Variant>? variants;
   final List<Option>? options;
@@ -91,7 +91,7 @@ class Product {
     dynamic templateSuffix,
     PublishedScope? publishedScope,
     String? tags,
-    Status? status,
+    String? status,
     String? adminGraphqlApiId,
     List<Variant>? variants,
     List<Option>? options,
@@ -138,7 +138,7 @@ class Product {
         templateSuffix: json["template_suffix"],
         publishedScope: publishedScopeValues.map[json["published_scope"]]!,
         tags: json["tags"],
-        status: statusValues.map[json["status"]]!,
+        status: json["status"],
         adminGraphqlApiId: json["admin_graphql_api_id"],
         variants: json["variants"] == null
             ? []
@@ -167,7 +167,7 @@ class Product {
         "template_suffix": templateSuffix,
         "published_scope": publishedScopeValues.reverse[publishedScope],
         "tags": tags,
-        "status": statusValues.reverse[status],
+        "status": status,
         "admin_graphql_api_id": adminGraphqlApiId,
         "variants": variants == null
             ? []
@@ -330,10 +330,6 @@ final nameValues = EnumValues({"Title": Name.TITLE});
 enum PublishedScope { WEB }
 
 final publishedScopeValues = EnumValues({"web": PublishedScope.WEB});
-
-enum Status { ACTIVE }
-
-final statusValues = EnumValues({"active": Status.ACTIVE});
 
 class Variant {
   final int? id;

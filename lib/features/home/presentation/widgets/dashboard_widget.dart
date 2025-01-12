@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:shopify_merchant/core/presentation/text_normal.dart';
 import 'package:shopify_merchant/core/presentation/text_title.dart';
 import 'package:shopify_merchant/core/settings/custom_theme.dart';
+import 'package:shopify_merchant/features/home/presentation/conrtoller/home_controller.dart';
 
 class DashboardWidget extends StatelessWidget {
-  const DashboardWidget({super.key});
+  final HomeController controller;
+
+  const DashboardWidget({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +51,7 @@ class DashboardWidget extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    const TextTitle(text: "1039"),
+                    TextTitle(text: "${controller.getTotalProducts}"),
                     const SizedBox(width: 10),
                     const TextNormal(
                       text: "products",
@@ -63,21 +66,21 @@ class DashboardWidget extends StatelessWidget {
                   color: CustomTheme.grey.withOpacity(.5),
                 ),
                 const SizedBox(height: 10),
-                const Row(
+                Row(
                   children: [
-                    TextNormal(
+                    const TextNormal(
                       text: "Active",
                       textColor: Colors.green,
                     ),
-                    SizedBox(width: 5),
-                    TextNormal(text: "10"),
-                    Spacer(),
-                    TextNormal(
+                    const SizedBox(width: 5),
+                    TextNormal(text: "${controller.getActiveProducts}"),
+                    const Spacer(),
+                    const TextNormal(
                       text: "Inactive",
                       textColor: Colors.red,
                     ),
-                    SizedBox(width: 5),
-                    TextNormal(text: "0"),
+                    const SizedBox(width: 5),
+                    TextNormal(text: "${controller.getInActiveProducts}"),
                   ],
                 )
               ],

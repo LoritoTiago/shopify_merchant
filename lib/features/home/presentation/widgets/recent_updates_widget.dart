@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:shopify_merchant/core/data/model/product_model.dart';
 import 'package:shopify_merchant/core/presentation/text_normal.dart';
 import 'package:shopify_merchant/core/presentation/text_title.dart';
 import 'package:shopify_merchant/core/settings/custom_theme.dart';
+import 'package:shopify_merchant/features/home/presentation/conrtoller/home_controller.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class RecentUpdatesWidget extends StatelessWidget {
-  const RecentUpdatesWidget({super.key});
+  final HomeController controller;
+  const RecentUpdatesWidget({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
+    final lastUpdated = controller.getLastUpdated;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -27,7 +31,7 @@ class RecentUpdatesWidget extends StatelessWidget {
             child: AnimationLimiter(
           key: const ValueKey("5"),
           child: ListView.builder(
-            itemCount: 5,
+            itemCount: lastUpdated.length,
             itemBuilder: (context, index) {
               return AnimationConfiguration.staggeredList(
                 position: index,
@@ -37,7 +41,7 @@ class RecentUpdatesWidget extends StatelessWidget {
                   child: FadeInAnimation(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
-                      child: itemRecentUpdates(),
+                      child: itemRecentUpdates(item: lastUpdated[index]),
                     ),
                   ),
                 ),
@@ -49,7 +53,7 @@ class RecentUpdatesWidget extends StatelessWidget {
     );
   }
 
-  Widget itemRecentUpdates() {
+  Widget itemRecentUpdates({required Product item}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Row(
@@ -62,13 +66,15 @@ class RecentUpdatesWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const TextTitle(
-                text: "Aerodynamic Concrete Clock",
+              TextTitle(
+                text: item.title ?? "",
                 size: 14.0,
                 fontWeight: FontWeight.w500,
               ),
               TextNormal(
-                text: timeago.format(DateTime.now(), locale: 'en_short'),
+                text: timeago.format(
+                  item.updatedAt!,
+                ),
                 size: 12.0,
               )
             ],

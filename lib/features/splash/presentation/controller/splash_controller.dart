@@ -22,7 +22,7 @@ class SplashController extends ValueNotifier<SplashStatus> {
 
     result.fold((left) => _mapError(left: left), (right) {
       log("Success");
-      getIt<BaseService>().productModel = right.products ?? [];
+      getIt<BaseService>().products = right.products ?? [];
 
       _exit();
     });
