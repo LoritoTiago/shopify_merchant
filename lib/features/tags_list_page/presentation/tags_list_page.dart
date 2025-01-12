@@ -45,6 +45,9 @@ class _TagsListPageState extends State<TagsListPage> {
                   icon: Icons.search,
                   textEditingController:
                       _tagsController.getTextSearchController,
+                  onChange: (p0) {
+                    _tagsController.searchTags();
+                  },
                 ),
                 const SizedBox(height: 10),
                 const Divider(
@@ -54,11 +57,12 @@ class _TagsListPageState extends State<TagsListPage> {
                 ValueListenableBuilder(
                     valueListenable: _tagsController,
                     builder: (context, value, child) {
+                      final tags = _tagsController.getTags;
                       return Expanded(
                           child: AnimationLimiter(
-                        key: const ValueKey("20"),
+                        key: ValueKey("${tags.length}"),
                         child: ListView.builder(
-                          itemCount: 20,
+                          itemCount: tags.length,
                           itemBuilder: (context, index) {
                             return AnimationConfiguration.staggeredList(
                               position: index,
@@ -68,7 +72,7 @@ class _TagsListPageState extends State<TagsListPage> {
                                 child: FadeInAnimation(
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 10.0),
-                                    child: _itemTag(),
+                                    child: _itemTag(item: tags[index]),
                                   ),
                                 ),
                               ),
@@ -85,7 +89,9 @@ class _TagsListPageState extends State<TagsListPage> {
     );
   }
 
-  Widget _itemTag() {
+  Widget _itemTag({required String item}) {
+    final allProductsWithThisTag =
+        _tagsController.getProductsWithTag(tag: item);
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: InkWell(
@@ -113,34 +119,15 @@ class _TagsListPageState extends State<TagsListPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const TextTitle(
-                text: "Aerodynamic Concrete Clock",
+              TextTitle(
+                text: item,
                 size: 16.0,
                 fontWeight: FontWeight.w500,
               ),
               const SizedBox(height: 5),
-              Row(
-                children: [
-                  const Expanded(
-                    child: TextNormal(
-                      text: "20 products",
-                      size: 12.0,
-                    ),
-                  ),
-                  const TextNormal(
-                    text: "Status",
-                    size: 9.0,
-                  ),
-                  const SizedBox(width: 5),
-                  Container(
-                    width: 6,
-                    height: 6,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: CustomTheme.green,
-                    ),
-                  ),
-                ],
+              TextNormal(
+                text: "$allProductsWithThisTag products",
+                size: 12.0,
               ),
             ],
           ),
