@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shopify_merchant/core/data/model/product_model.dart';
 import 'package:shopify_merchant/core/presentation/background_widget.dart';
 import 'package:shopify_merchant/core/presentation/custom_text_field.dart';
 import 'package:shopify_merchant/core/presentation/text_normal.dart';
@@ -11,7 +12,9 @@ import 'package:shopify_merchant/features/products_list_page/presentation/widget
 import 'package:shopify_merchant/features/products_list_page/presentation/widgets/product_list_widget.dart';
 
 class ProductsListPage extends StatefulWidget {
-  const ProductsListPage({super.key});
+  final List<Product> products;
+  const ProductsListPage(
+      {super.key, required String tag, required this.products});
 
   @override
   State<ProductsListPage> createState() => _ProductsListPageState();
@@ -25,6 +28,7 @@ class _ProductsListPageState extends State<ProductsListPage> {
     super.initState();
 
     _productsController = ProductListPageController();
+    _productsController.setProducts = widget.products;
 
     _productsController.setTextSearchController = TextEditingController();
     _productsController.setOrderBy = OrderByModel.none;
@@ -66,42 +70,18 @@ class _ProductsListPageState extends State<ProductsListPage> {
                       icon: Icons.search,
                       textEditingController:
                           _productsController.getTextSearchController,
+                      onChange: (p0) {
+                        _productsController.searchProducts();
+                      },
                     ),
                     const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        const Spacer(),
-                        const TextNormal(
-                          text: "Order by: ",
-                          textColor: CustomTheme.grey,
-                        ),
-                        OrderByButton(
-                          isSelected: _productsController.isOrderByAndZ,
-                          onTap: () {
-                            _productsController.changeOrderStatus =
-                                OrderByModel.aandz;
-                            HapticFeedback.vibrate();
-                          },
-                          title: "A-Z",
-                        ),
-                        const SizedBox(width: 5),
-                        OrderByButton(
-                          isSelected: _productsController.isOrderByDate,
-                          onTap: () {
-                            _productsController.changeOrderStatus =
-                                OrderByModel.date;
-                            HapticFeedback.vibrate();
-                          },
-                          title: "Date",
-                        )
-                      ],
-                    ),
+                    _orderByRow(),
                     const SizedBox(height: 10),
                     const Divider(
                       height: 1,
                       color: CustomTheme.grey,
                     ),
-                    const ProductListWidget(),
+                    ProductListWidget(controller: _productsController),
                   ],
                 );
               },
@@ -127,5 +107,34 @@ class _ProductsListPageState extends State<ProductsListPage> {
     super.dispose();
 
     _productsController.dispose();
+  }
+
+  Widget _orderByRow() {
+    return Row(
+      children: [
+        const Spacer(),
+        const TextNormal(
+          text: "Order by: ",
+          textColor: CustomTheme.grey,
+        ),
+        OrderByButton(
+          isSelected: _productsController.isOrderByAndZ,
+          onTap: () {
+            _productsController.changeOrderStatus = OrderByModel.aandz;
+            HapticFeedback.vibrate();
+          },
+          title: "A-Z",
+        ),
+        const SizedBox(width: 5),
+        OrderByButton(
+          isSelected: _productsController.isOrderByDate,
+          onTap: () {
+            _productsController.changeOrderStatus = OrderByModel.date;
+            HapticFeedback.vibrate();
+          },
+          title: "Date",
+        )
+      ],
+    );
   }
 }

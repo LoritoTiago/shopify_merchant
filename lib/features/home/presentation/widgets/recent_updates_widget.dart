@@ -5,6 +5,8 @@ import 'package:shopify_merchant/core/presentation/text_normal.dart';
 import 'package:shopify_merchant/core/presentation/text_title.dart';
 import 'package:shopify_merchant/core/settings/custom_theme.dart';
 import 'package:shopify_merchant/features/home/presentation/conrtoller/home_controller.dart';
+import 'package:shopify_merchant/features/products_list_page/presentation/controller/product_list_page_controller.dart';
+import 'package:shopify_merchant/features/products_list_page/presentation/widgets/products_details_modal.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class RecentUpdatesWidget extends StatelessWidget {
@@ -41,7 +43,8 @@ class RecentUpdatesWidget extends StatelessWidget {
                   child: FadeInAnimation(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0),
-                      child: itemRecentUpdates(item: lastUpdated[index]),
+                      child: itemRecentUpdates(
+                          item: lastUpdated[index], context: context),
                     ),
                   ),
                 ),
@@ -53,34 +56,53 @@ class RecentUpdatesWidget extends StatelessWidget {
     );
   }
 
-  Widget itemRecentUpdates({required Product item}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.arrow_outward_sharp,
-            color: CustomTheme.purple,
-          ),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextTitle(
-                text: item.title ?? "",
-                size: 14.0,
-                fontWeight: FontWeight.w500,
-              ),
-              TextNormal(
-                text: timeago.format(
-                  item.updatedAt!,
+  Widget itemRecentUpdates(
+      {required Product item, required BuildContext context}) {
+    final productController = ProductListPageController();
+
+    return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      onTap: () => _showModal(
+          context: context,
+          item: item,
+          totalInventory: productController.getTotalVariants(product: item)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.arrow_outward_sharp,
+              color: CustomTheme.purple,
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextTitle(
+                  text: item.title ?? "",
+                  size: 14.0,
+                  fontWeight: FontWeight.w500,
                 ),
-                size: 12.0,
-              )
-            ],
-          )
-        ],
+                TextNormal(
+                  text: timeago.format(
+                    item.updatedAt!,
+                  ),
+                  size: 12.0,
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
+  }
+
+  void _showModal(
+      {required BuildContext context,
+      required int totalInventory,
+      required Product item}) {
+    ProductsDetailsModal.call(
+        context: context, item: item, totalInventory: totalInventory);
   }
 }

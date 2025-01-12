@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopify_merchant/core/data/model/product_model.dart';
 import 'package:shopify_merchant/core/di/di.dart';
 import 'package:shopify_merchant/core/services/base_service.dart';
 
@@ -49,11 +50,11 @@ class TagsController extends ValueNotifier<List<String>> {
     return value;
   }
 
-  int getProductsWithTag({required String tag}) {
+  List<Product> getProductsWithTag({required String tag}) {
     return getIt<BaseService>()
         .products
         .where((e) => e.tags?.toUpperCase().contains(tag) ?? false)
-        .length;
+        .toList();
   }
 
   @override

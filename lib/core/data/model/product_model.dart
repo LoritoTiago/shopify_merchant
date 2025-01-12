@@ -54,8 +54,8 @@ class Product {
   final String? adminGraphqlApiId;
   final List<Variant>? variants;
   final List<Option>? options;
-  final List<Image>? images;
-  final Image? image;
+  final List<ImageProduct>? images;
+  final ImageProduct? image;
 
   Product({
     this.id,
@@ -95,8 +95,8 @@ class Product {
     String? adminGraphqlApiId,
     List<Variant>? variants,
     List<Option>? options,
-    List<Image>? images,
-    Image? image,
+    List<ImageProduct>? images,
+    ImageProduct? image,
   }) =>
       Product(
         id: id ?? this.id,
@@ -150,8 +150,10 @@ class Product {
                 json["options"]!.map((x) => Option.fromJson(x))),
         images: json["images"] == null
             ? []
-            : List<Image>.from(json["images"]!.map((x) => Image.fromJson(x))),
-        image: json["image"] == null ? null : Image.fromJson(json["image"]),
+            : List<ImageProduct>.from(
+                json["images"]!.map((x) => ImageProduct.fromJson(x))),
+        image:
+            json["image"] == null ? null : ImageProduct.fromJson(json["image"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -182,7 +184,7 @@ class Product {
       };
 }
 
-class Image {
+class ImageProduct {
   final int? id;
   final dynamic alt;
   final int? position;
@@ -195,7 +197,7 @@ class Image {
   final String? src;
   final List<dynamic>? variantIds;
 
-  Image({
+  ImageProduct({
     this.id,
     this.alt,
     this.position,
@@ -209,7 +211,7 @@ class Image {
     this.variantIds,
   });
 
-  Image copyWith({
+  ImageProduct copyWith({
     int? id,
     dynamic alt,
     int? position,
@@ -222,7 +224,7 @@ class Image {
     String? src,
     List<dynamic>? variantIds,
   }) =>
-      Image(
+      ImageProduct(
         id: id ?? this.id,
         alt: alt ?? this.alt,
         position: position ?? this.position,
@@ -236,7 +238,7 @@ class Image {
         variantIds: variantIds ?? this.variantIds,
       );
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
+  factory ImageProduct.fromJson(Map<String, dynamic> json) => ImageProduct(
         id: json["id"],
         alt: json["alt"],
         position: json["position"],

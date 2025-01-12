@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:shopify_merchant/core/data/model/product_model.dart';
 import 'package:shopify_merchant/core/presentation/text_normal.dart';
 import 'package:shopify_merchant/core/presentation/text_title.dart';
 import 'package:shopify_merchant/core/settings/custom_theme.dart';
+import 'package:shopify_merchant/features/products_list_page/presentation/controller/product_list_page_controller.dart';
 import 'package:shopify_merchant/features/products_list_page/presentation/widgets/products_details_modal.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ProductItemWidget extends StatelessWidget {
-  final int tag;
-  const ProductItemWidget({super.key, required this.tag});
+  final ProductListPageController controller;
+  final Product item;
+
+  const ProductItemWidget(
+      {super.key, required this.item, required this.controller});
 
   @override
   Widget build(context) {
+    final totalInventory = controller.getTotalVariants(product: item);
     return InkWell(
-      onTap: () => _showModal(context: context, tag: tag),
+      onTap: () => _showModal(context: context, totalInventory: totalInventory),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 15.0),
         child: Container(
@@ -30,12 +36,21 @@ class ProductItemWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
           child: Row(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: SizedBox(
-                  height: 45,
-                  width: 45,
-                  child: Image.asset("assets/icon.png"),
+              Container(
+                height: 45,
+                width: 45,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: CustomTheme.grey.withOpacity(.1),
+                  image: DecorationImage(
+                    image: FadeInImage.assetNetwork(
+                      placeholder: 'assets/icon.png',
+                      image: item.image?.src ?? "",
+                      fadeInDuration: const Duration(
+                        milliseconds: 300,
+                      ),
+                    ).image,
+                  ),
                 ),
               ),
               const SizedBox(width: 10),
@@ -45,9 +60,9 @@ class ProductItemWidget extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Expanded(
+                        Expanded(
                           child: TextTitle(
-                            text: "Aerodynamic Concrete Clock",
+                            text: item.title ?? "",
                             size: 14.0,
                             fontWeight: FontWeight.w500,
                           ),
@@ -56,25 +71,22 @@ class ProductItemWidget extends StatelessWidget {
                           width: 10,
                         ),
                         TextNormal(
-                            text: timeago.format(DateTime.now(),
+                            text: timeago.format(item.createdAt!,
                                 locale: 'en_short')),
                       ],
                     ),
                     const SizedBox(height: 5),
-                    const Row(
+                    Row(
                       children: [
                         Expanded(
                           child: TextNormal(
-                            text: "Total inventory: 2039",
+                            text: "Total inventory: $totalInventory",
                             size: 12.0,
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Icon(
-                            Icons.more_horiz_rounded,
-                            color: CustomTheme.black,
-                          ),
+                        const Icon(
+                          Icons.more_horiz_rounded,
+                          color: CustomTheme.black,
                         )
                       ],
                     ),
@@ -88,7 +100,9 @@ class ProductItemWidget extends StatelessWidget {
     );
   }
 
-  void _showModal({required BuildContext context, required int tag}) {
-    ProductsDetailsModal.call(context: context, item: tag);
+  void _showModal(
+      {required BuildContext context, required int totalInventory}) {
+    ProductsDetailsModal.call(
+        context: context, item: item, totalInventory: totalInventory);
   }
 }
