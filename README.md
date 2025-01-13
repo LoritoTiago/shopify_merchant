@@ -31,7 +31,7 @@ Follow these steps to set up and run the project on your local machine:
    Clone the project to your local machine:
 
    ```bash
-   git https://github.com/LoritoTiago/shopify_merchant.git
+   git clone https://github.com/LoritoTiago/shopify_merchant.git
    cd shopify_merchant
    ```
 
